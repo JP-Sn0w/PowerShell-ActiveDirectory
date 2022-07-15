@@ -1,0 +1,37 @@
+MAS IMPORTANTES
+---------------
+#Listar todos los objetos del tipo Usuario que van a expirar en 90 días
+Search-ADAccount -AccountExpiring -usersOnly -TimeSpan 90.00:00:00 | FT Name,ObjectClass -A
+
+#Listar todos los objetos del tipo Usuario que van a expirar en una fecha en concreto
+Search-ADAccount -AccountExpiring -usersOnly -DateTime "10/06/2029" | FT Name,ObjectClass,AccountExpirationDate,sAMAccountName,UserPrincipalName,distinguishedName -A
+
+#Listar todos los objetos del tipo Computer que han estado inactivos los últimos 60 días
+Search-ADAccount -AccountInactive -computersOnly -TimeSpan 60.00:00:00 | FT Name,ObjectClass -A
+
+#Lista todos los objetos del tipo Usuario que tengan la password expirada
+Search-ADAccount -PasswordExpired -usersOnly | FT Name,ObjectClass -A
+
+#Lista todos los objetos del tipo Usuario que NUNCA EXPIRA la contrasena 
+Search-ADAccount -PasswordNeverExpires -usersOnly | FT Name,ObjectClass -A 
+
+#Lista todos los objetos del tipo Usuario que su cuenta esté bloqueada
+Search-ADAccount -LockedOut -usersOnly | FT Name,ObjectClass -A
+
+
+
+
+
+MENOS IMPORTANTES
+-----------------
+#Lista todas las computadoras con Windows 
+Get-ADComputer -Filter {OperatingSystem -Like "*Windows*"} -SearchBase "CN=Computers,DC=empresa,DC=com,DC=pe"  -properties * |select-object name,OperatingSystem,Description,lastlogondate,ipv4address,ManagedBy,primarygroup | out-gridview
+
+#Lista todos los objetos del tipo Computer que estén deshabilitados
+Search-ADAccount -AccountDisabled -computersOnly | FT Name,ObjectClass -A
+
+#Lista todos los objetos del tipo Usuario que estén deshabilitados
+Search-ADAccount -AccountDisabled -usersOnly | FT Name,ObjectClass -A
+
+#Lista todos los objetos que hayan expirado
+Search-ADAccount -AccountExpired | FT Name,ObjectClass -A
